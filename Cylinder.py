@@ -480,39 +480,9 @@ for it in range(0, nt):
     
     QC = usol.y[:,-1]
     print(it)
-     
-plt.show()
 
 np.savetxt('output/rho.txt',rho)
 np.savetxt('output/velx.txt',velx)
 np.savetxt('output/vely.txt',vely)
 np.savetxt('output/pr.txt',pr)
 
-'''
-import matplotlib.animation as ani
-QC = QI
-rho = np.zeros(Nx)
-frames=nt-2
-fig = plt.figure()
-z = 0
-def scatter_ani(i=int):
-    global z
-    global QC
-    usol = solve_ivp(FOU, [z*dt, (z*dt)+dt], QC, args = [SW]) 
-    for i in range(0,Nx):
-        rho[i] = QtoU([usol.y[i,-1],usol.y[Nx+i,-1],usol.y[(2*Nx)+i,-1]])[0]
-    
-    if (z%5==0):
-        plt.figure(1)
-        plt.grid('true')
-        plt.plot(x,rho);
-        plt.xlabel(r'x');
-        plt.ylabel(r'$\rho$');
-        plt.title('Density - 1st order Steger Warming Scheme for time = %1.3f' %t)
-       
-    QC = usol.y[:,-1]
-    z = z+1
-
-anim = ani.FuncAnimation(fig, scatter_ani, frames=frames, interval=200)
-anim.save("1storderSW.gif")
-'''
