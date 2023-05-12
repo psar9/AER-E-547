@@ -459,25 +459,6 @@ def FDS(UL, UR):
     
     return Roeflux
 
-def rungeKutta(u, fun):
-    # Count number of iterations using step size or step height h
-    t0 = 0
-    nt = int(t/dt)
-    # Iterate for number of iterations
-    for i in range(0, nt):
-        "Apply Runge Kutta Formulas to find next value of y"
-        k1 = fun(t0, u)
-        k2 = fun(t0 + 0.5 * dt, u + 0.5 * dt * k1)
-        k3 = fun(t0 + 0.5 * dt, u + 0.5 * dt * k2)
-        k4 = fun(t0 + dt, u + dt * k3)
- 
-        # Update next value of y
-        u = u + (1.0 / 6.0)*(k1 + 2 * k2 + 2 * k3 + k4)*dt
- 
-        # Update next value of x
-        t0 = t0 + dt
-    return u
-
 QC = QI
 rho = np.zeros((Nx,Ny))
 vel = np.zeros((Nx,Ny))
@@ -497,45 +478,16 @@ for it in range(0, nt):
             pr[i,j]  = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
                              usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[3]
     
-    if (it%5==0):
-        plt.figure(1)
-        #plt.grid('true')
-        plt.pcolor(x,y,rho);
-        plt.xlabel(r'x');
-        plt.ylabel(r'$\rho$');
-        plt.title('Density - 1st order Van Leer Scheme for time = %1.3f' %t)
-        
-        plt.figure(2)
-        #plt.grid('true')
-        plt.pcolor(x,y,velx);
-        plt.xlabel(r'x');
-        plt.ylabel(r'$u_x$');
-        plt.title('Velocity - 1st order Van Leer Scheme for time = %1.3f' %t)
-        
-        plt.figure(3)
-        #plt.grid('true')
-        plt.pcolor(x,y,vely);
-        plt.xlabel(r'x');
-        plt.ylabel(r'$u_y$');
-        plt.title('Velocity - 1st order Van Leer Scheme for time = %1.3f' %t)
-        
-        plt.figure(4)
-        #plt.grid('true')
-        plt.pcolor(x,y,pr);
-        plt.xlabel(r'x');
-        plt.ylabel(r'p');
-        plt.title('Pressure - 1st order Van Leer Scheme for time = %1.3f' %t)
-    
     QC = usol.y[:,-1]
     print(it)
      
 plt.show()
-'''
+
 np.savetxt('output/rho.txt',rho)
 np.savetxt('output/velx.txt',velx)
 np.savetxt('output/vely.txt',vely)
 np.savetxt('output/pr.txt',pr)
-'''
+
 '''
 import matplotlib.animation as ani
 QC = QI
