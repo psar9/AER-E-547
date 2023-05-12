@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
 L = 2
-Nx = 10
-Ny = 10
+Nx = 100
+Ny = 100
 dx = L/Nx
 dy = L/Ny
 x = np.linspace(dx/2,L-dx/2,Nx)
@@ -483,7 +483,7 @@ rho = np.zeros((Nx,Ny))
 vel = np.zeros((Nx,Ny))
 pr = np.zeros((Nx,Ny))
 
-for it in range(0, 5):
+for it in range(0, nt):
 
     usol = solve_ivp(SOU, [it*dt, (it*dt)+dt], QC, args = [VLx,VLy,vanleer]) 
     for i in range(0,Nx):
