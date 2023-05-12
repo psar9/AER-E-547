@@ -13,7 +13,7 @@ g = 1.4
 R = 0.4
 sigma = 0.5
 dt = (sigma*dx)/a
-t = 0.4
+t = 5
 nt = int(t/dt)
 velx = np.zeros((Nx,Ny))
 vely = np.zeros((Nx,Ny))
@@ -471,7 +471,7 @@ for i in range(0,Nx):
                             usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[1]
         vely[i,j] = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
                             usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[2]
-        pr[i,j]  = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
+        pr[i,j] = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
                             usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[3]
 '''
 for it in range(0,nt):
