@@ -473,7 +473,22 @@ for i in range(0,Nx):
                             usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[2]
         pr[i,j]  = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
                             usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[3]
-
+'''
+for it in range(0,nt):
+    usol = solve_ivp(SOU, [it*dt, (it*dt) + dt], QC, args = [VLx,VLy,vanleer]) 
+    for i in range(0,Nx):
+        for j in range(0,Ny):
+            rho[i,j] = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
+                                usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[0]
+            velx[i,j] = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
+                                usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[1]
+            vely[i,j] = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
+                                usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[2]
+            pr[i,j]  = QtoU([usol.y[(Ny*i)+j,-1],usol.y[(Nx*Ny)+(Ny*i)+j,-1],\
+                                usol.y[(2*Nx*Ny)+(Ny*i)+j,-1],usol.y[(3*Nx*Ny)+(Ny*i)+j,-1]])[3]
+    QC = usol.y[:,-1]
+    print(it)
+'''
 np.savetxt('rho.txt',rho)
 np.savetxt('velx.txt',velx)
 np.savetxt('vely.txt',vely)
