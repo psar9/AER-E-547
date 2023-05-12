@@ -57,7 +57,7 @@ def pres(q1,q2,q3):
 
 def QtoU(Q):
     [q1,q2,q3] = Q
-    return np.array([q1, q2/q1, (q3 - (q2**2/2*q1))*(g-1)])
+    return np.array([q1, q2/q1, (q3 - (q2**2/(2*q1)))*(g-1)])
 
 def UtoQ(U):
     [r,u,p] = U
@@ -432,7 +432,7 @@ plt.xlabel(r'x');
 plt.ylabel(r't');
 plt.title('Pressure - Central Scheme for Dissipation for time = %1.3f' %t)
 '''
-
+'''
 QC = QI
 rho = np.zeros(Nx)
 vel = np.zeros(Nx)
@@ -516,8 +516,8 @@ plt.ylabel(r't');
 plt.title('Pressure - 1st order Steger Warming Scheme for time = %1.3f' %t)
 #plt.title('Pressure - 1st order Van Leer Scheme for time = %1.3f' %t)
 #plt.title('Pressure - 1st order Roe Scheme for time = %1.3f' %t)
-
 '''
+
 QC = QI
 rhoc = np.zeros((Nx, nt))
 velc = np.zeros((Nx, nt))
@@ -600,7 +600,7 @@ plt.ylabel(r't');
 #plt.title('Pressure - 2nd order Steger Warming Scheme for time = %1.3f' %t)
 #plt.title('Velocity - 2nd order Van Leer Scheme for time = %1.3f' %t)
 plt.title('Velocity - 2nd order Roe Scheme for time = %1.3f' %t)
-'''
+
 '''
 import matplotlib.animation as ani
 QC = QI

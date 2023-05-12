@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
 L = 2
-Nx = 5
-Ny = 5
+Nx = 10
+Ny = 10
 dx = L/Nx
 dy = L/Ny
 x = np.linspace(dx/2,L-dx/2,Nx)
@@ -48,16 +48,16 @@ def Et(rho, u, v, p):
 def Ht(rho, u, v, p):
     return (((g*p)/(rho*(g-1))) + 0.5*u**2 + 0.5*v**2)
 
-def pres(q1,q2,q3, q4):
-    return (g-1)*(q4 - ((q2**2+q3**3)/(2*q1)))
+def pres(q1, q2, q3, q4):
+    return (g-1)*(q4 - ((q2**2+q3**2)/(2*q1)))
 
 def QtoU(Q):
     [q1, q2, q3, q4] = Q
-    return np.array([q1, q2/q1, q3/q1, (q4 - ((q2**2+q3**2)/2*q1))*(g-1)])
+    return np.array([q1, q2/q1, q3/q1, (q4 - ((q2**2+q3**2)/(2*q1)))*(g-1)])
 
 def UtoQ(U):
     [r,u,v,p] = U
-    return np.array([r, r*u, r*v, r*(p/(r*(g-1)) + 0.5*u**2 + 0.5*v**2)])
+    return np.array([r, r*u, r*v, r*((p/(r*(g-1))) + 0.5*u**2 + 0.5*v**2)])
 
 def FluxF(U):
     [r,u,v,p] = U
@@ -69,14 +69,14 @@ def FluxG(U):
 
 def SOU(t,QC,schx,schy,lim):
   
-    f1 = np.zeros((Nx+1,Ny+1))
-    f2 = np.zeros((Nx+1,Ny+1))
-    f3 = np.zeros((Nx+1,Ny+1))
-    f4 = np.zeros((Nx+1,Ny+1))
-    g1 = np.zeros((Nx+1,Ny+1))
-    g2 = np.zeros((Nx+1,Ny+1))
-    g3 = np.zeros((Nx+1,Ny+1))
-    g4 = np.zeros((Nx+1,Ny+1))
+    f1 = np.zeros((Nx+1,Ny))
+    f2 = np.zeros((Nx+1,Ny))
+    f3 = np.zeros((Nx+1,Ny))
+    f4 = np.zeros((Nx+1,Ny))
+    g1 = np.zeros((Nx,Ny+1))
+    g2 = np.zeros((Nx,Ny+1))
+    g3 = np.zeros((Nx,Ny+1))
+    g4 = np.zeros((Nx,Ny+1))
     U1 = np.zeros((Nx,Ny))
     U2 = np.zeros((Nx,Ny))
     U3 = np.zeros((Nx,Ny))
@@ -127,26 +127,6 @@ def SOU(t,QC,schx,schy,lim):
                 rL4[i,j] = (U4[i,j]-U4[i-1,j])/(U4[i-1,j]-U4[i-2,j])
             if((U4[i,j] - U4[i+1,j]) != 0):   
                 rR4[i,j] = (U4[i-1,j]-U4[i,j])/(U4[i,j]-U4[i+1,j]) 
-            
-    for i in range(0,Nx):
-        for j in range(2,Ny-1):
-            
-            if((U1[i,j-1] - U1[i,j-2]) != 0):
-                rb1[i,j] = (U1[i,j]-U1[i,j-1])/(U1[i,j-1]-U1[i,j-2])
-            if((U1[i,j] - U1[i,j+1]) != 0):   
-                rt1[i,j] = (U1[i,j-1]-U1[i,j])/(U1[i,j]-U1[i,j+1])
-            if((U2[i,j-1] - U2[i,j-2]) != 0):
-                rb2[i,j] = (U2[i,j]-U2[i,j-1])/(U2[i,j-1]-U2[i,j-2])
-            if((U2[i,j] - U2[i,j+1]) != 0):   
-                rt2[i,j] = (U2[i,j-1]-U2[i,j])/(U2[i,j]-U2[i,j+1])
-            if((U3[i,j-1] - U3[i,j-2]) != 0):
-                rb3[i,j] = (U3[i,j]-U3[i,j-1])/(U3[i,j-1]-U3[i,j-2])
-            if((U3[i,j] - U3[i,j+1]) != 0):   
-                rt3[i,j] = (U3[i,j-1]-U3[i,j])/(U3[i,j]-U3[i,j+1]) 
-            if((U4[i,j-1] - U4[i,j-2]) != 0):
-                rb4[i,j] = (U4[i,j]-U4[i,j-1])/(U4[i,j-1]-U4[i,j-2])
-            if((U4[i,j] - U4[i,j+1]) != 0):   
-                rt4[i,j] = (U4[i,j-1]-U4[i,j])/(U4[i,j]-U4[i,j+1]) 
         
     for i in range(2,Nx-1):
         for j in range(0,Ny):
@@ -213,15 +193,35 @@ def SOU(t,QC,schx,schy,lim):
     '''
     
     for i in range(0,Nx):
+        for j in range(2,Ny-1):
+            
+            if((U1[i,j-1] - U1[i,j-2]) != 0):
+                rb1[i,j] = (U1[i,j]-U1[i,j-1])/(U1[i,j-1]-U1[i,j-2])
+            if((U1[i,j] - U1[i,j+1]) != 0):   
+                rt1[i,j] = (U1[i,j-1]-U1[i,j])/(U1[i,j]-U1[i,j+1])
+            if((U2[i,j-1] - U2[i,j-2]) != 0):
+                rb2[i,j] = (U2[i,j]-U2[i,j-1])/(U2[i,j-1]-U2[i,j-2])
+            if((U2[i,j] - U2[i,j+1]) != 0):   
+                rt2[i,j] = (U2[i,j-1]-U2[i,j])/(U2[i,j]-U2[i,j+1])
+            if((U3[i,j-1] - U3[i,j-2]) != 0):
+                rb3[i,j] = (U3[i,j]-U3[i,j-1])/(U3[i,j-1]-U3[i,j-2])
+            if((U3[i,j] - U3[i,j+1]) != 0):   
+                rt3[i,j] = (U3[i,j-1]-U3[i,j])/(U3[i,j]-U3[i,j+1]) 
+            if((U4[i,j-1] - U4[i,j-2]) != 0):
+                rb4[i,j] = (U4[i,j]-U4[i,j-1])/(U4[i,j-1]-U4[i,j-2])
+            if((U4[i,j] - U4[i,j+1]) != 0):   
+                rt4[i,j] = (U4[i,j-1]-U4[i,j])/(U4[i,j]-U4[i,j+1]) 
+    
+    for i in range(0,Nx):
         for j in range(2,Ny-1):    
-            Ub1 = U1[i,j-1] + lim(rL1[i,j])*0.5*(U1[i,j-1] - U1[i,j-2])
-            Ut1 = U1[i,j] + lim(rR1[i,j])*0.5*(U1[i,j] - U1[i,j+1])
-            Ub2 = U2[i,j-1] + lim(rL2[i,j])*0.5*(U2[i,j-1] - U2[i,j-2])
-            Ut2 = U2[i,j] + lim(rR2[i,j])*0.5*(U2[i,j] - U2[i,j+1])
-            Ub3 = U3[i,j-1] + lim(rL3[i,j])*0.5*(U3[i,j-1] - U3[i,j-2])
-            Ut3 = U3[i,j] + lim(rR3[i,j])*0.5*(U3[i,j] - U3[i,j+1])
-            Ub4 = U4[i,j-1] + lim(rL4[i,j])*0.5*(U4[i,j-1] - U4[i,j-2])
-            Ut4 = U4[i,j] + lim(rR4[i,j])*0.5*(U4[i,j] - U4[i,j+1])
+            Ub1 = U1[i,j-1] + lim(rb1[i,j])*0.5*(U1[i,j-1] - U1[i,j-2])
+            Ut1 = U1[i,j] + lim(rt1[i,j])*0.5*(U1[i,j] - U1[i,j+1])
+            Ub2 = U2[i,j-1] + lim(rb2[i,j])*0.5*(U2[i,j-1] - U2[i,j-2])
+            Ut2 = U2[i,j] + lim(rt2[i,j])*0.5*(U2[i,j] - U2[i,j+1])
+            Ub3 = U3[i,j-1] + lim(rb3[i,j])*0.5*(U3[i,j-1] - U3[i,j-2])
+            Ut3 = U3[i,j] + lim(rt3[i,j])*0.5*(U3[i,j] - U3[i,j+1])
+            Ub4 = U4[i,j-1] + lim(rb4[i,j])*0.5*(U4[i,j-1] - U4[i,j-2])
+            Ut4 = U4[i,j] + lim(rt4[i,j])*0.5*(U4[i,j] - U4[i,j+1])
             
             g1[i,j] = FSy(np.array([Ub1,Ub2,Ub3,Ub4]),np.array([Ut1,Ut2,Ut3,Ut4]),schy)[0]
             g2[i,j] = FSy(np.array([Ub1,Ub2,Ub3,Ub4]),np.array([Ut1,Ut2,Ut3,Ut4]),schy)[1]
@@ -266,21 +266,21 @@ def SOU(t,QC,schx,schy,lim):
        
     '''
     # Wall Boundary Conditions
-    g1[0] = 0
-    g1[-1] = 0
-    g2[0] = 0
-    g2[-1] = 0
+    g1[:,0] = 0
+    g1[:,-1] = 0
+    g2[:,0] = 0
+    g2[:,-1] = 0
     g3[:,0] = U4[:,0]
     g3[:,-1] = U4[:,-1]
-    g4[0] = 0
-    g4[-1] = 0
+    g4[:,0] = 0
+    g4[:,-1] = 0
     '''
     
     for i in range(1,Nx-1):
         for i in range(0,Ny):
   
             df[(Ny*i)+j]= f1[i+1,j] - f1[i,j]
-            df[(1*Nx*Ny)+(Ny*i)+j] = f2[i+1,j] - f2[i,j]
+            df[(Nx*Ny)+(Ny*i)+j] = f2[i+1,j] - f2[i,j]
             df[(2*Nx*Ny)+(Ny*i)+j] = f3[i+1,j] - f3[i,j]
             df[(3*Nx*Ny)+(Ny*i)+j] = f4[i+1,j] - f4[i,j]
         
@@ -288,11 +288,11 @@ def SOU(t,QC,schx,schy,lim):
         for j in range(1,Ny-1):
             
             dg[(Ny*i)+j] = g1[i,j+1] - g1[i,j]
-            dg[(1*Nx*Ny)+(Ny*i)+j] = g2[i,j+1] - g2[i,j]
+            dg[(Nx*Ny)+(Ny*i)+j] = g2[i,j+1] - g2[i,j]
             dg[(2*Nx*Ny)+(Ny*i)+j] = g3[i,j+1] - g3[i,j]
             dg[(3*Nx*Ny)+(Ny*i)+j] = g4[i,j+1] - g4[i,j]
         
-    return -(df/dx) -(dg/dx)
+    return -(df/dx) -(dg/dy)
 
 def vanleer(r):
     psi = (r+abs(r))/(1+abs(r))
@@ -310,15 +310,15 @@ def FSx(UL,UR,schx):
     
     return inFlux
 
-def FSy(UL,UR,schy):
+def FSy(Ub,Ut,schy):
     
     if(schy == SWy or schy == VLy):
-        [gLm, gLp] = schy(UL)
-        [gRm, gRp] = schy(UR)
-        inFlux = gLp + gRm
+        [gbm, gbp] = schy(Ub)
+        [gtm, gtp] = schy(Ut)
+        inFlux = gbp + gtm
     
     elif(schy == FDS):
-        inFlux = FDS(UL,UR)
+        inFlux = FDS(Ub,Ut)
     
     return inFlux
 
@@ -384,8 +384,10 @@ def VLx(U):
 def VLy(U):
     
     [r,u,v,p] = U
+    if(r<0):
+        print(r)
     c = np.sqrt(g*p/r)
-    Mv = u/c
+    Mv = v/c
     if(Mv<-1):
         Gm = FluxG(U)
         Gp = np.zeros(4)
@@ -481,7 +483,7 @@ rho = np.zeros((Nx,Ny))
 vel = np.zeros((Nx,Ny))
 pr = np.zeros((Nx,Ny))
 
-for it in range(0, nt):
+for it in range(0, 5):
 
     usol = solve_ivp(SOU, [it*dt, (it*dt)+dt], QC, args = [VLx,VLy,vanleer]) 
     for i in range(0,Nx):
