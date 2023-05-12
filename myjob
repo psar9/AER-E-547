@@ -9,5 +9,6 @@
 #SBATCH --ntasks-per-node=36   # 36 processor core(s) per node 
 
 # LOAD MODULES, INSERT CODE, AND RUN YOUR PROGRAMS HERE
-module load python_3/3.9.2
+salloc #desired options
+module load miniconda3
 python Cylinder.py
