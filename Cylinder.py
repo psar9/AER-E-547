@@ -458,7 +458,8 @@ def FDS(UL, UR):
 
 QC = QI
 rho = np.zeros((Nx,Ny))
-vel = np.zeros((Nx,Ny))
+velx = np.zeros((Nx,Ny))
+vely = np.zeros((Nx,Ny))
 pr = np.zeros((Nx,Ny))
 
 usol = solve_ivp(SOU, [0, t], QC, args = [VLx,VLy,vanleer]) 
