@@ -383,8 +383,6 @@ def VLx(U):
 def VLy(U):
     
     [r,u,v,p] = U
-    if(r<0):
-        print(r)
     c = np.sqrt(g*p/r)
     Mv = v/c
     if(Mv<-1):
@@ -480,8 +478,8 @@ for it in range(0, nt):
     QC = usol.y[:,-1]
     print(it)
 
-np.savetxt('output/rho.txt',rho)
-np.savetxt('output/velx.txt',velx)
-np.savetxt('output/vely.txt',vely)
-np.savetxt('output/pr.txt',pr)
+np.savetxt('rho.txt',rho)
+np.savetxt('velx.txt',velx)
+np.savetxt('vely.txt',vely)
+np.savetxt('pr.txt',pr)
 
