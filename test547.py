@@ -7,7 +7,7 @@ dx = L/Nx
 dy = L/Ny
 x = np.linspace(dx/2,L-dx/2,Nx)
 y = np.linspace(dy/2,L-dy/2,Ny)
-t = 5
+t = 10
 rho = np.zeros((Nx,Ny))
 rhof = list(map(float,open("rho.txt").read().split()))
 for i in range(0,Nx):
